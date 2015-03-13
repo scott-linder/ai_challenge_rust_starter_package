@@ -11,6 +11,7 @@ pub enum Error {
     UnexpectedLine,
     UnexpectedEof,
     Io(io::Error),
+    UnknownCommand,
 }
 
 impl ::std::error::Error for Error {
@@ -21,6 +22,7 @@ impl ::std::error::Error for Error {
             Error::UnexpectedLine => "Unexpected line",
             Error::UnexpectedEof => "Unexpected Eof",
             Error::Io(ref e) => e.description(),
+            Error::UnknownCommand => "Unknown command",
         }
     }
 }

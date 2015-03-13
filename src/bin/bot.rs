@@ -5,6 +5,7 @@ extern crate ants;
 use std::io::{stdin, BufRead, BufReadExt};
 use ants::params::Params;
 use ants::error::{Result, Error};
+use ants::world::World;
 
 fn parse_params<R: BufRead>(read: R) -> Result<Params> {
     let mut lines = read.lines();
@@ -27,8 +28,8 @@ fn parse_params<R: BufRead>(read: R) -> Result<Params> {
 fn main() {
     let stdin = stdin();
     let params = parse_params(stdin.lock()).unwrap();
+    let world = World::new(&params);
     for line in stdin.lock().lines() {
         let line = line.unwrap();
-        println!("{}", line);
     }
 }
