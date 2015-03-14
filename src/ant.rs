@@ -1,7 +1,7 @@
 use player::Player;
 
-#[derive(Default, Debug, Copy, PartialEq, Eq)]
+#[derive(Default, Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Ant {
-    alive: bool,
-    owner: Player,
+    pub alive: bool,
+    pub owner: Player,
 }

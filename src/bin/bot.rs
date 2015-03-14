@@ -28,8 +28,15 @@ fn parse_params<R: BufRead>(read: R) -> Result<Params> {
 fn main() {
     let stdin = stdin();
     let params = parse_params(stdin.lock()).unwrap();
-    let world = World::new(&params);
+    let mut world = World::new(&params);
+    println!("go");
     for line in stdin.lock().lines() {
         let line = line.unwrap();
+        if line == "go" {
+            println!("go");
+            world.clear();
+        } else if line.len() > 0 {
+            world.update(&*line).unwrap();
+        }
     }
 }

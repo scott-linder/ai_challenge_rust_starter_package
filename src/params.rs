@@ -3,15 +3,15 @@ use error::{Result, Error};
 
 #[derive(Default, Debug, PartialEq, Eq)]
 pub struct Params {
-    loadtime: i32,
-    turntime: i32,
-    rows: i32,
-    cols: i32,
-    turns: i32,
-    viewradius2: i32,
-    attackradius2: i32,
-    spawnradius2: i32,
-    player_seed: i64,
+    pub loadtime: i32,
+    pub turntime: i32,
+    pub rows: i32,
+    pub cols: i32,
+    pub turns: i32,
+    pub viewradius2: i32,
+    pub attackradius2: i32,
+    pub spawnradius2: i32,
+    pub player_seed: i64,
 }
 
 impl Params {

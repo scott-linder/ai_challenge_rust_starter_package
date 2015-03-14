@@ -1,8 +1,8 @@
 use std::default::Default;
 use std::str::FromStr;
-use error::Result;
+use error::{Result, Error};
 
-#[derive(Debug, Copy, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Player {
     Me,
     Other(u8),
@@ -15,11 +15,13 @@ impl Default for Player {
 }
 
 impl FromStr for Player {
+    type Err = Error;
+
     fn from_str(s: &str) -> Result<Player> {
         let i: u8 = try!(s.parse());
-        match i {
+        Ok(match i {
             0 => Player::Me,
             n => Player::Other(n),
-        }
+        })
     }
 }
