@@ -1,7 +1,13 @@
+//! 2D coordinates.
+
 use std::ops::Add;
 use std::fmt;
 use direction::Direction;
 
+/// An location or offset in the world's map.
+///
+/// The top left corner of the map is `Point { row: 0, col: 0 }`, with rows
+/// incrementing down and cols incrementing to the right.
 #[derive(Default, Hash, Copy, Debug, PartialEq, Eq)]
 pub struct Point {
     pub row: i32,
@@ -17,6 +23,11 @@ fn wrap(n: i32, max: i32) -> i32 {
 }
 
 impl Point {
+    /// Calculate a point corrected for overflow or underflow.
+    ///
+    /// The map is a torus, so a point which overflows should start back at
+    /// 0, and one that underflows should start back at the max for that
+    /// dimension.
     pub fn wrap(&self, rows: i32, cols: i32) -> Point {
         Point {
             row: wrap(self.row, rows),

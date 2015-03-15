@@ -1,10 +1,15 @@
+//! Game players.
+
 use std::default::Default;
 use std::str::FromStr;
 use error::{Result, Error};
 
+/// One game player.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Player {
+    /// Special value representing our own bot.
     Me,
+    /// All other players are represented by a small number.
     Other(u8),
 }
 

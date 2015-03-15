@@ -1,6 +1,9 @@
+//! Cardinal directions.
+
 use std::fmt;
 use point::Point;
 
+/// Represents the four cardinal directions in the game.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[derive_Rand]
 pub enum Direction {
@@ -11,6 +14,10 @@ pub enum Direction {
 }
 
 impl Direction {
+    /// Convert the direction into a 'unit point'.
+    ///
+    /// The result can be added to a `Point` to offset it one unit in any
+    /// direction.
     pub fn into_point(self) -> Point {
         match self {
             Direction::North => Point { row: -1, col: 0 },

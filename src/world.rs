@@ -1,3 +1,5 @@
+//! The entire game world.
+
 use std::num::Float;
 use tile::Tile;
 use point::Point;
@@ -6,7 +8,12 @@ use params::Params;
 use error::{Result, Error};
 use map::Map;
 use direction::Direction;
+use player::Player;
 
+/// The entire game world.
+///
+/// All game state is tracked in something reachable via the `World`, and it
+/// is the only thing passed to the bot during each turn.
 #[derive(Debug)]
 pub struct World<'a> {
     params: &'a Params,
@@ -15,6 +22,9 @@ pub struct World<'a> {
     vision_offsets: Box<[Point]>,
 }
 
+/// Calculate a set of "vision offsets": points relative to an ant that it
+/// can see. This is an expensive operation, and so should be performed once
+/// and cached (as the results are valid for the entirety of a game).
 fn vision_offsets(params: &Params) -> Box<[Point]> {
     let mut offsets = Vec::new();
     let mx = (params.viewradius2 as f64).sqrt() as i32;
@@ -33,6 +43,7 @@ fn vision_offsets(params: &Params) -> Box<[Point]> {
 }
 
 impl<'a> World<'a> {
+    /// Construct a new `World` from the given game parameters.
     pub fn new(params: &Params) -> World {
         World {
             params: params,
@@ -42,6 +53,7 @@ impl<'a> World<'a> {
         }
     }
 
+    /// Clear all tiles, except water (which never changes between turns).
     pub fn clear(&mut self) {
         for (_, tile) in self.map.tiles_mut() {
             if *tile != Some(Tile::Water) {
@@ -50,6 +62,7 @@ impl<'a> World<'a> {
         }
     }
 
+    /// Update vision relative to the given `point` using `vision_offsets`.
     fn update_vision(&mut self, point: Point) {
         for offset in self.vision_offsets.iter() {
             let visible = point + *offset;
@@ -60,6 +73,10 @@ impl<'a> World<'a> {
         }
     }
 
+    /// Update world from one line of input.
+    ///
+    /// Blank and "go" lines are not handled here and should not be passed in.
+    /// Vision is updated automatically as ants are discovered.
     pub fn update(&mut self, line: &str) -> Result<()> {
         let splits = line.split(' ').collect::<Vec<_>>();
         match &*splits {
@@ -71,7 +88,7 @@ impl<'a> World<'a> {
                     row: try!(row.parse()),
                     col: try!(col.parse()),
                 };
-                self.map[point] = match variant {
+                let tile = match variant {
                     "w" => Some(Tile::Water),
                     "f" => Some(Tile::Food),
                     _ => match rest {
@@ -93,19 +110,22 @@ impl<'a> World<'a> {
                         _ => return Err(Error::UnknownCommand),
                     },
                 };
-                if let Some(Tile::Ant(..)) = self.map[point] {
+                if let Some(Tile::Ant(Ant { owner: Player::Me, .. })) = tile {
                     self.update_vision(point);
                 }
+                self.map[point] = tile;
             },
             _ => return Err(Error::UnexpectedLine),
         }
         Ok(())
     }
 
+    /// Check what turn it is.
     pub fn turn(&self) -> i32 {
         self.turn
     }
 
+    /// Issue order for an ant at a given point to move in the given direction.
     pub fn order(&self, point: Point, direction: Direction) {
         println!("o {} {}", point, direction);
     }

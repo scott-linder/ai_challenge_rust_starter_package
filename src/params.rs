@@ -1,7 +1,10 @@
+//! Constant parameters set once per game.
+
 use std::default::Default;
 use error::{Result, Error};
 use std::io::{BufRead, BufReadExt};
 
+/// Parameters supplied once before the game begins.
 #[derive(Default, Debug, PartialEq, Eq)]
 pub struct Params {
     pub loadtime: i32,
@@ -16,10 +19,15 @@ pub struct Params {
 }
 
 impl Params {
+    /// Construct a new `Params` with default values.
     pub fn new() -> Params {
         Default::default()
     }
 
+    /// Parse input on `read` to populate a `Params`.
+    ///
+    /// Input must start with the line "turn 0", end with the line "ready",
+    /// and have only valid parameter commands in-between.
     pub fn from_buf_read<R: BufRead>(read: R) -> Result<Params> {
         let mut lines = read.lines();
         let first_line = try!(try!(lines.next().ok_or(Error::UnexpectedEof)));
@@ -38,6 +46,7 @@ impl Params {
         Ok(params)
     }
 
+    /// Parse the given line for valid parameter commands and update self.
     pub fn update(&mut self, line: &str) -> Result<()> {
         match &*line.splitn(1, ' ').collect::<Vec<_>>() {
             [var, val] => match var {

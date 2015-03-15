@@ -1,3 +1,5 @@
+//! Rust library for the [ants ai challenge](http://ants.aichallenge.org/)
+
 #![feature(core, io, collections, plugin, custom_derive)]
 #![plugin(rand_macros)]
 

@@ -1,16 +1,25 @@
+//! Error handling and results.
+
 use std::num::ParseIntError;
 use std::fmt::{self, Display, Formatter};
 use std::io;
 
+/// Convenience alias for `Result` using our `Error` type.
 pub type Result<T> = ::std::result::Result<T, Error>;
 
+/// Any error producible by the library.
 #[derive(Debug)]
 pub enum Error {
+    /// An unknown or malformed initial world parameter was encountered.
     BadParameter,
+    /// An attempt to parse an input as an integer failed.
     ParseInt(ParseIntError),
     UnexpectedLine,
+    /// Eof was encountered before the game completed.
     UnexpectedEof,
+    /// An IO error occurred.
     Io(io::Error),
+    /// An unknown or malformed turn input command was encountered.
     UnknownCommand,
 }
 

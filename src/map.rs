@@ -1,9 +1,15 @@
+//! 2D representation of the game world's map.
+
 use std::ops::{Index, IndexMut};
 use std::slice;
 use std::iter::Enumerate;
 use point::Point;
 use tile::Tile;
 
+/// 2D collection of `Tile` with fixed dimensions and visibility.
+///
+/// Visibility is represented by wrapping each `Tile` in an `Option`: `None`
+/// represents a tile which is not visible, and `Some(..)` wraps one which is.
 #[derive(Debug)]
 pub struct Map {
     rows: i32,
@@ -21,6 +27,7 @@ impl Map {
         }
     }
 
+    /// An iterator over all tiles in the map, in no particular order.
     pub fn tiles<'a>(&'a self) -> Tiles<'a> {
         Tiles {
             cols: self.cols,
@@ -28,6 +35,7 @@ impl Map {
         }
     }
 
+    /// A mut iterator over all tiles in the map, in no particular order.
     pub fn tiles_mut<'a>(&'a mut self) -> TilesMut<'a> {
         TilesMut {
             cols: self.cols,
@@ -52,6 +60,7 @@ impl IndexMut<Point> for Map {
     }
 }
 
+/// An iterator over all tiles in the map, in no particular order.
 pub struct Tiles<'a> {
     cols: i32,
     inner: Enumerate<slice::Iter<'a, Option<Tile>>>,
@@ -72,6 +81,7 @@ impl<'a> Iterator for Tiles<'a> {
     }
 }
 
+/// A mut iterator over all tiles in the map, in no particular order.
 pub struct TilesMut<'a> {
     cols: i32,
     inner: Enumerate<slice::IterMut<'a, Option<Tile>>>,
