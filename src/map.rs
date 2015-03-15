@@ -30,6 +30,7 @@ impl Map {
     /// An iterator over all tiles in the map, in no particular order.
     pub fn tiles<'a>(&'a self) -> Tiles<'a> {
         Tiles {
+            rows: self.rows,
             cols: self.cols,
             inner: self.tiles.iter().enumerate(),
         }
@@ -38,6 +39,7 @@ impl Map {
     /// A mut iterator over all tiles in the map, in no particular order.
     pub fn tiles_mut<'a>(&'a mut self) -> TilesMut<'a> {
         TilesMut {
+            rows: self.rows,
             cols: self.cols,
             inner: self.tiles.iter_mut().enumerate(),
         }
@@ -62,6 +64,7 @@ impl IndexMut<Point> for Map {
 
 /// An iterator over all tiles in the map, in no particular order.
 pub struct Tiles<'a> {
+    rows: i32,
     cols: i32,
     inner: Enumerate<slice::Iter<'a, Option<Tile>>>,
 }
@@ -79,10 +82,16 @@ impl<'a> Iterator for Tiles<'a> {
             None
         }
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let size = (self.rows as usize) * (self.cols as usize);
+        (size, Some(size))
+    }
 }
 
 /// A mut iterator over all tiles in the map, in no particular order.
 pub struct TilesMut<'a> {
+    rows: i32,
     cols: i32,
     inner: Enumerate<slice::IterMut<'a, Option<Tile>>>,
 }
@@ -99,5 +108,10 @@ impl<'a> Iterator for TilesMut<'a> {
         } else {
             None
         }
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let size = (self.rows as usize) * (self.cols as usize);
+        (size, Some(size))
     }
 }
