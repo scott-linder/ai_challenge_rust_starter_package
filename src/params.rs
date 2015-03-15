@@ -1,5 +1,6 @@
 use std::default::Default;
 use error::{Result, Error};
+use std::io::{BufRead, BufReadExt};
 
 #[derive(Default, Debug, PartialEq, Eq)]
 pub struct Params {
@@ -17,6 +18,24 @@ pub struct Params {
 impl Params {
     pub fn new() -> Params {
         Default::default()
+    }
+
+    pub fn from_buf_read<R: BufRead>(read: R) -> Result<Params> {
+        let mut lines = read.lines();
+        let first_line = try!(try!(lines.next().ok_or(Error::UnexpectedEof)));
+        if &*first_line != "turn 0" {
+            return Err(Error::UnexpectedLine);
+        }
+        let mut params = Params::new();
+        for line in lines {
+            let line = try!(line);
+            if line == "ready" {
+                break;
+            } else {
+                try!(params.update(&*line));
+            }
+        }
+        Ok(params)
     }
 
     pub fn update(&mut self, line: &str) -> Result<()> {

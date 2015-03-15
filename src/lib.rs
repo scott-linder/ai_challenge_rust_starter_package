@@ -12,3 +12,4 @@ pub mod player;
 pub mod ant;
 pub mod direction;
 pub mod map;
+pub mod bot;
