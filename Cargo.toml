@@ -7,3 +7,8 @@ authors = ["scott-linder <scott.b.linder@wmich.edu>"]
 [[bin]]
 
 name = "bot"
+
+[dependencies]
+
+rand = "*"
+rand_macros = "*"

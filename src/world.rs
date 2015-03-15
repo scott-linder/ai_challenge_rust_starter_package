@@ -5,6 +5,7 @@ use ant::Ant;
 use params::Params;
 use error::{Result, Error};
 use map::Map;
+use direction::Direction;
 
 #[derive(Debug)]
 pub struct World<'a> {
@@ -42,7 +43,7 @@ impl<'a> World<'a> {
     }
 
     pub fn clear(&mut self) {
-        for tile in self.map.tiles() {
+        for (_, tile) in self.map.tiles_mut() {
             if *tile != Some(Tile::Water) {
                 *tile = None;
             }
@@ -103,5 +104,9 @@ impl<'a> World<'a> {
 
     pub fn turn(&self) -> i32 {
         self.turn
+    }
+
+    pub fn order(&self, point: Point, direction: Direction) {
+        println!("o {} {}", point, direction);
     }
 }

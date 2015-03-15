@@ -1,4 +1,5 @@
 use std::ops::Add;
+use std::fmt;
 use direction::Direction;
 
 #[derive(Default, Hash, Copy, Debug, PartialEq, Eq)]
@@ -40,6 +41,12 @@ impl Add<Direction> for Point {
 
     fn add(self, rhs: Direction) -> Point {
         self + rhs.into_point()
+    }
+}
+
+impl fmt::Display for Point {
+    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+        write!(f, "{} {}", self.row, self.col)
     }
 }
 

@@ -2,6 +2,7 @@ use std::fmt;
 use point::Point;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive_Rand]
 pub enum Direction {
     North,
     South,

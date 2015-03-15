@@ -1,4 +1,7 @@
-#![feature(core, io, collections)]
+#![feature(core, io, collections, plugin, custom_derive)]
+#![plugin(rand_macros)]
+
+extern crate rand;
 
 pub mod error;
 pub mod params;

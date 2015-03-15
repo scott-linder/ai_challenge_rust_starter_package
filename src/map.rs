@@ -1,5 +1,6 @@
 use std::ops::{Index, IndexMut};
 use std::slice;
+use std::iter::Enumerate;
 use point::Point;
 use tile::Tile;
 
@@ -20,8 +21,18 @@ impl Map {
         }
     }
 
-    pub fn tiles<'a>(&'a mut self) -> Tiles<'a> {
-        Tiles { inner: self.tiles.iter_mut() }
+    pub fn tiles<'a>(&'a self) -> Tiles<'a> {
+        Tiles {
+            cols: self.cols,
+            inner: self.tiles.iter().enumerate(),
+        }
+    }
+
+    pub fn tiles_mut<'a>(&'a mut self) -> TilesMut<'a> {
+        TilesMut {
+            cols: self.cols,
+            inner: self.tiles.iter_mut().enumerate(),
+        }
     }
 }
 
@@ -42,13 +53,41 @@ impl IndexMut<Point> for Map {
 }
 
 pub struct Tiles<'a> {
-    inner: slice::IterMut<'a, Option<Tile>>,
+    cols: i32,
+    inner: Enumerate<slice::Iter<'a, Option<Tile>>>,
 }
 
 impl<'a> Iterator for Tiles<'a> {
-    type Item = &'a mut Option<Tile>;
+    type Item = (Point, &'a Option<Tile>);
 
-    fn next(&mut self) -> Option<&'a mut Option<Tile>> {
-        self.inner.next()
+    fn next(&mut self) -> Option<(Point, &'a Option<Tile>)> {
+        if let Some((i, tile)) = self.inner.next() {
+            Some((Point {
+                row: i as i32 / self.cols,
+                col: i as i32 % self.cols,
+            }, tile))
+        } else {
+            None
+        }
+    }
+}
+
+pub struct TilesMut<'a> {
+    cols: i32,
+    inner: Enumerate<slice::IterMut<'a, Option<Tile>>>,
+}
+
+impl<'a> Iterator for TilesMut<'a> {
+    type Item = (Point, &'a mut Option<Tile>);
+
+    fn next(&mut self) -> Option<(Point, &'a mut Option<Tile>)> {
+        if let Some((i, tile)) = self.inner.next() {
+            Some((Point {
+                row: i as i32 / self.cols,
+                col: i as i32 % self.cols,
+            }, tile))
+        } else {
+            None
+        }
     }
 }
