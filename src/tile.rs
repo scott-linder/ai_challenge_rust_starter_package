@@ -10,7 +10,7 @@ use player::Player;
 pub enum Tile {
     /// Is (and always will be) impassable water.
     Water,
-    /// Currently contains by food.
+    /// Currently contains food.
     Food,
     /// Currently contains an ant (or many ants, if all dead).
     Ant(Ant),
