@@ -5,7 +5,6 @@ use point::Point;
 
 /// Represents the four cardinal directions in the game.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-#[derive_Rand]
 pub enum Direction {
     North,
     South,
