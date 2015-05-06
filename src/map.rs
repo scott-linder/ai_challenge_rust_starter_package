@@ -49,14 +49,14 @@ impl Map {
 impl Index<Point> for Map {
     type Output = Option<Tile>;
 
-    fn index<'a>(&'a self, point: &Point) -> &'a Option<Tile> {
+    fn index<'a>(&'a self, point: Point) -> &'a Option<Tile> {
         let Point{row, col} = point.wrap(self.rows, self.cols);
         &self.tiles[(row * self.cols + col) as usize]
     }
 }
 
 impl IndexMut<Point> for Map {
-    fn index_mut<'a>(&'a mut self, point: &Point) -> &'a mut Option<Tile> {
+    fn index_mut<'a>(&'a mut self, point: Point) -> &'a mut Option<Tile> {
         let Point{row, col} = point.wrap(self.rows, self.cols);
         &mut self.tiles[(row * self.cols + col) as usize]
     }

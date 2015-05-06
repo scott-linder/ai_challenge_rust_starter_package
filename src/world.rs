@@ -1,6 +1,5 @@
 //! The entire game world.
 
-use std::num::Float;
 use tile::Tile;
 use point::Point;
 use ant::Ant;
@@ -78,44 +77,42 @@ impl<'a> World<'a> {
     /// Blank and "go" lines are not handled here and should not be passed in.
     /// Vision is updated automatically as ants are discovered.
     pub fn update(&mut self, line: &str) -> Result<()> {
-        let splits = line.split(' ').collect::<Vec<_>>();
-        match &*splits {
-            ["turn", turn] => {
-                self.turn = try!(turn.parse());
-            },
-            [variant, row, col, rest..] => {
-                let point = Point {
-                    row: try!(row.parse()),
-                    col: try!(col.parse()),
-                };
-                let tile = match variant {
-                    "w" => Some(Tile::Water),
-                    "f" => Some(Tile::Food),
-                    _ => match rest {
-                        [owner] => {
-                            let owner = try!(owner.parse());
-                            match variant {
-                                "h" => Some(Tile::Hill(owner)),
-                                "a" => Some(Tile::Ant(Ant {
-                                    alive: true,
-                                    owner: owner
-                                })),
-                                "d" => Some(Tile::Ant(Ant {
-                                    alive: false,
-                                    owner: owner
-                                })),
-                                _ => return Err(Error::UnknownCommand),
-                            }
-                        },
+        let mut split = line.split(' ');
+        let variant = try!(split.next().ok_or(Error::UnexpectedLine));
+        if variant == "turn" {
+            let turn = try!(split.next().ok_or(Error::UnknownCommand));
+            self.turn = try!(turn.parse());
+        } else {
+            let row = try!(split.next().ok_or(Error::UnknownCommand));
+            let col = try!(split.next().ok_or(Error::UnknownCommand));
+            let point = Point {
+                row: try!(row.parse()),
+                col: try!(col.parse()),
+            };
+            let tile = match variant {
+                "w" => Some(Tile::Water),
+                "f" => Some(Tile::Food),
+                _ => {
+                    let owner = try!(split.next().ok_or(Error::UnknownCommand));
+                    let owner = try!(owner.parse());
+                    match variant {
+                        "h" => Some(Tile::Hill(owner)),
+                        "a" => Some(Tile::Ant(Ant {
+                            alive: true,
+                            owner: owner
+                        })),
+                        "d" => Some(Tile::Ant(Ant {
+                            alive: false,
+                            owner: owner
+                        })),
                         _ => return Err(Error::UnknownCommand),
-                    },
-                };
-                if let Some(Tile::Ant(Ant { owner: Player::Me, .. })) = tile {
-                    self.update_vision(point);
-                }
-                self.map[point] = tile;
-            },
-            _ => return Err(Error::UnexpectedLine),
+                    }
+                },
+            };
+            if let Some(Tile::Ant(Ant { owner: Player::Me, .. })) = tile {
+                self.update_vision(point);
+            }
+            self.map[point] = tile;
         }
         Ok(())
     }

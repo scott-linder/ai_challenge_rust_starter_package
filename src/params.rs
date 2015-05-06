@@ -2,7 +2,7 @@
 
 use std::default::Default;
 use error::{Result, Error};
-use std::io::{BufRead, BufReadExt};
+use std::io::BufRead;
 
 /// Parameters supplied once before the game begins.
 #[derive(Default, Debug, PartialEq, Eq)]
@@ -48,19 +48,19 @@ impl Params {
 
     /// Parse the given line for valid parameter commands and update self.
     pub fn update(&mut self, line: &str) -> Result<()> {
-        match &*line.splitn(1, ' ').collect::<Vec<_>>() {
-            [var, val] => match var {
-                "loadtime" => self.loadtime = try!(val.parse()),
-                "turntime" => self.turntime = try!(val.parse()),
-                "rows" => self.rows = try!(val.parse()),
-                "cols" => self.cols = try!(val.parse()),
-                "turns" => self.turns = try!(val.parse()),
-                "viewradius2" => self.viewradius2 = try!(val.parse()),
-                "attackradius2" => self.attackradius2 = try!(val.parse()),
-                "spawnradius2" => self.spawnradius2 = try!(val.parse()),
-                "player_seed" => self.player_seed = try!(val.parse()),
-                _ => return Err(Error::BadParameter),
-            },
+        let mut splitn = line.splitn(2, ' ');
+        let var = try!(splitn.next().ok_or(Error::BadParameter));
+        let val = try!(splitn.next().ok_or(Error::BadParameter));
+        match var {
+            "loadtime" => self.loadtime = try!(val.parse()),
+            "turntime" => self.turntime = try!(val.parse()),
+            "rows" => self.rows = try!(val.parse()),
+            "cols" => self.cols = try!(val.parse()),
+            "turns" => self.turns = try!(val.parse()),
+            "viewradius2" => self.viewradius2 = try!(val.parse()),
+            "attackradius2" => self.attackradius2 = try!(val.parse()),
+            "spawnradius2" => self.spawnradius2 = try!(val.parse()),
+            "player_seed" => self.player_seed = try!(val.parse()),
             _ => return Err(Error::BadParameter),
         }
         Ok(())

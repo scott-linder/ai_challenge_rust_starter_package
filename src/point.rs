@@ -8,7 +8,7 @@ use direction::Direction;
 ///
 /// The top left corner of the map is `Point { row: 0, col: 0 }`, with rows
 /// incrementing down and cols incrementing to the right.
-#[derive(Default, Hash, Copy, Debug, PartialEq, Eq)]
+#[derive(Default, Hash, Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Point {
     pub row: i32,
     pub col: i32,

@@ -2,7 +2,7 @@
 
 use world::World;
 use error::Result;
-use std::io::{stdin, BufReadExt};
+use std::io::{stdin, BufRead};
 use params::Params;
 
 /// The `Bot` describes the unique functionality of all bots.
@@ -12,6 +12,11 @@ use params::Params;
 /// The glue code to make the bot usable in the usual case is provided in a
 /// default implementation of `run`, but it might be useful to provide a custom
 /// implementation here as well.
+///
+/// # Example
+///
+/// extern crate bot;
+///
 pub trait Bot {
     /// The per-turn logic of the bot.
     ///
