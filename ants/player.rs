@@ -2,7 +2,7 @@
 
 use std::default::Default;
 use std::str::FromStr;
-use error::{Result, Error};
+use ants::error::{Result, Error};
 
 /// One game player.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]

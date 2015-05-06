@@ -1,13 +1,13 @@
 //! The entire game world.
 
-use tile::Tile;
-use point::Point;
-use ant::Ant;
-use params::Params;
-use error::{Result, Error};
-use map::Map;
-use direction::Direction;
-use player::Player;
+use ants::tile::Tile;
+use ants::point::Point;
+use ants::ant::Ant;
+use ants::params::Params;
+use ants::error::{Result, Error};
+use ants::map::Map;
+use ants::direction::Direction;
+use ants::player::Player;
 
 /// The entire game world.
 ///

@@ -2,7 +2,7 @@
 
 use std::ops::Add;
 use std::fmt;
-use direction::Direction;
+use ants::direction::Direction;
 
 /// An location or offset in the world's map.
 ///

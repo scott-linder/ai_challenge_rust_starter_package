@@ -2,7 +2,7 @@
 //!
 //! Representation and any code related to individual ants.
 
-use player::Player;
+use ants::player::Player;
 
 /// An Ant that is currently in play.
 ///

@@ -1,9 +1,9 @@
 //! Home of `Bot` trait, where user specifies their bot's unique behavior.
 
-use world::World;
-use error::Result;
 use std::io::{stdin, BufRead};
-use params::Params;
+use ants::world::World;
+use ants::error::Result;
+use ants::params::Params;
 
 /// The `Bot` describes the unique functionality of all bots.
 ///

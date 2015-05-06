@@ -3,8 +3,8 @@
 use std::ops::{Index, IndexMut};
 use std::slice;
 use std::iter::Enumerate;
-use point::Point;
-use tile::Tile;
+use ants::point::Point;
+use ants::tile::Tile;
 
 /// 2D collection of `Tile` with fixed dimensions and visibility.
 ///

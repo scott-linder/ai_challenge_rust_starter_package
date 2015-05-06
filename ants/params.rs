@@ -1,8 +1,8 @@
 //! Constant parameters set once per game.
 
 use std::default::Default;
-use error::{Result, Error};
 use std::io::BufRead;
+use ants::error::{Result, Error};
 
 /// Parameters supplied once before the game begins.
 #[derive(Default, Debug, PartialEq, Eq)]

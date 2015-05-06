@@ -1,4 +1,4 @@
-extern crate ants;
+mod ants;
 
 use ants::ant::Ant;
 use ants::bot::Bot;

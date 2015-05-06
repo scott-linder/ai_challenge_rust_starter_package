@@ -1,7 +1,7 @@
 //! Map tiles.
 
-use ant::Ant;
-use player::Player;
+use ants::ant::Ant;
+use ants::player::Player;
 
 /// One tile on the game map.
 ///

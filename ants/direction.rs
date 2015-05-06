@@ -1,7 +1,7 @@
 //! Cardinal directions.
 
 use std::fmt;
-use point::Point;
+use ants::point::Point;
 
 /// Represents the four cardinal directions in the game.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
